@@ -37,7 +37,7 @@ public class Application implements CommandLineRunner, Closeable {
     private static BigInteger currentMin = null;
     private static BigInteger threshold = null;
 
-    public static BigInteger getCurrentMin() {
+    public static synchronized BigInteger getCurrentMin() {
         return currentMin;
     }
 
@@ -47,7 +47,7 @@ public class Application implements CommandLineRunner, Closeable {
         }
     }
 
-    public static BigInteger getCurrentMax() {
+    public static synchronized BigInteger getCurrentMax() {
         return currentMax;
     }
 
@@ -95,7 +95,7 @@ public class Application implements CommandLineRunner, Closeable {
         System.out.println("Closing and cleaning up");
     }
 
-    private void resetCounters() {
+    private static void resetCounters() {
         currentMax = null;
         currentMin = null;
         threshold = null;
