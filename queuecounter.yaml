@@ -1,0 +1,87 @@
+swagger: "2.0"
+info:
+  description: "This API allows you to query the current results of the queue processing system"
+  version: "1.0.0"
+  title: "Queue Counter"
+  license:
+    name: "CC BY-SA"
+    url: "https://creativecommons.org/licenses/by-sa/4.0"
+host: "localhost:8080"
+basePath: "/v1"
+schemes:
+- "http"
+paths:
+  /all:
+    get:
+      summary: "Get all fields in one request"
+      operationId: "getCurrentResults"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CurrentResults"
+  /count/abovethreshold:
+    get:
+      summary: "Count of numbers above the threshold"
+      description: "Count of numbers above the threshold"
+      operationId: "getAboveThreshold"
+      produces:
+      - "text/plain"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+  /count/total:
+    get:
+      summary: "Count number of messages processed"
+      description: "Count number of messages processed"
+      operationId: "getTotalCount"
+      produces:
+      - "text/plain"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+  /max:
+    get:
+      summary: "Count of numbers above the threshold"
+      description: "Count of numbers above the threshold"
+      operationId: "getMax"
+      produces:
+      - "text/plain"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+  /min:
+    get:
+      summary: "Count of numbers above the threshold"
+      description: "Count of numbers above the threshold"
+      operationId: "getMin"
+      produces:
+      - "text/plain"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+definitions:
+  CurrentResults:
+    type: "object"
+    properties:
+      totalCount:
+        type: "integer"
+        format: "int64"
+      aboveThresholdCount:
+        type: "integer"
+        format: "int64"
+      max:
+        type: "integer"
+      min:
+        type: "integer"
+      threshold:
+        type: "integer"
+    xml:
+      name: "CurrentResults"

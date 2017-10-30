@@ -1,0 +1,36 @@
+Feature:
+  A thread-safe, multi-threaded queue-processing service that reads large integers (100+ digits) from an input queue of String and performs two operations on them:
+  Counts inputs that are larger than a configurable threshold.
+  Finds the maximum and minimum values.
+
+  Scenario: Start queue processing
+    Given the JMS broker is running
+    And 984759387509890329865428370937850943720750938934850934750982734028309890437082370838509348509347987504358349509347 is in the queue
+    And there are 200 random items in the queue
+    And -87346873458456872689376857685678452362987439857320482903479843658934758830984034987598457604598039484092375843975034985394 is in the queue
+    When queuecounter is started with a threshold of 2147483648
+    Then 202 items are processed within 10 seconds
+    And Minimum is -87346873458456872689376857685678452362987439857320482903479843658934758830984034987598457604598039484092375843975034985394
+    And Maximum is 984759387509890329865428370937850943720750938934850934750982734028309890437082370838509348509347987504358349509347
+
+  Scenario: Processing items in the queue
+    Given the JMS broker is running
+    And 100 is in the queue
+    And 2147483648 is in the queue
+    And 2147483649 is in the queue
+    And 9223372036854775809 is in the queue
+    And -14 is in the queue
+    When queuecounter is started with a threshold of 2147483648
+    Then 5 items are processed within 10 seconds
+    And Minimum is -14
+    And Maximum is 9223372036854775809
+    And Count is 2
+
+  Scenario: Processing a large queue
+    Given the JMS broker is running
+    And numbers_set_1.csv is loaded in the queue
+    When queuecounter is started with a threshold of 9223372036854775809
+    Then 1000 items are processed within 30 seconds
+    And Minimum is -5256427779162360000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    And Maximum is 5258897139383630000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    And Count is 515
